@@ -53,12 +53,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        Project::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'user_id' => auth()->id(),
-        ]);
-        return redirect()->route('projects.index');
+        return view('projects.show', compact('project'));
     }
 
     /**

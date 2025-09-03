@@ -17,12 +17,12 @@ class ProjectSeeder extends Seeder
     {
         Project::create([
             'name' => 'Website Sekolah',
-            'description' => 'Pembuatkan Aplikasi Website Sekolah',
+            'description' => 'Pembuatan Aplikasi Website Sekolah',
             'user_id' => 1,
         ]);
          Project::create([
             'name' => 'Design UI/UX',
-            'description' => 'Pembuatkan Design UI/UX Website Sekolah',
+            'description' => 'Pembuatan Design UI/UX Website Sekolah',
             'user_id' => 1,
         ]);
     }

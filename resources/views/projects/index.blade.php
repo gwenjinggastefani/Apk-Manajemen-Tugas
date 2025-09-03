@@ -8,7 +8,7 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>#</th>
+                <th>No</th>
                 <th>Nama Project</th>
                 <th>Deskripsi</th>
                 <th>Status</th>

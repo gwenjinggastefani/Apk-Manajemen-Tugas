@@ -18,6 +18,8 @@ class ProjectController extends Controller
         return view('projects.index', compact('projects'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +27,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $users = \App\Models\User::all();
+        return view('projects.create', compact('users'));
     }
 
     /**
@@ -40,17 +43,19 @@ class ProjectController extends Controller
         'name'        => 'required|string|max:255',
         'description' => 'nullable|string',
         'status'      => 'required|in:in_progress,done',
+        'user_id'     => 'required|exists:users,id',
     ]);
 
     Project::create([
         'name'        => $request->name,
         'description' => $request->description,
         'status'      => $request->status,
-        'user_id'     => auth()->id(),
+        'user_id'     => $request->user_id, // ambil dari form, bukan auth()->id()
     ]);
 
     return redirect()->route('projects.index')->with('success', 'Project berhasil dibuat.');
 }
+
 
 
     /**

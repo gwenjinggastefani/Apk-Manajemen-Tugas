@@ -12,14 +12,15 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('teams', function (Blueprint $table) {
-            $table->id();
-           $table->foreignId('manager_id')->constrained('users')->onDelete('cascade');
-           $table->foreignId('member_id')->constrained('users')->onDelete('cascade');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('teams', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('manager_id')->constrained('users')->onDelete('cascade');
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

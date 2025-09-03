@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Project Manager',
             'email' => 'manager@example.com',
-            'password' => 'password',
+            'password' => 'manager',
             'role' => 'admin',
         ]);
 
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Anggota Tim',
             'email' => 'user@example.com',
-            'password' => 'password',
+            'password' => 'anggota',
             'role' => 'user',
         ]);
     }

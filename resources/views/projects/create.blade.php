@@ -1,17 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Tambah Proyek</h1>
-<form method="POST" action="{{ route('projects.store') }}">
-    @csrf
-    <div class="mb-3">
-        <label>Nama Proyek</label>
-        <input type="text" name="name" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label>Deskripsi</label>
-        <textarea name="description" class="form-control"></textarea>
-    </div>
-    <button type="submit" class="btn btn-success">Simpan</button>
-</form>
+<div class="d-flex justify-content-between mb-3">
+    <h3>Daftar Projects</h3>
+    <a href="{{ route('projects.create') }}" class="btn btn-success">+ Tambah Project</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nama</th>
+            <th>Deskripsi</th>
+            <th>Progress</th>
+            <th>Tasks</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($projects as $p)
+            <tr>
+                <td>{{ $p->id }}</td>
+                <td><a href="{{ route('projects.show', $p) }}">{{ $p->name }}</a></td>
+                <td>{{ \Illuminate\Support\Str::limit($p->description, 80) }}</td>
+                <td>{{ $p->progress }}%</td>
+                <td>{{ $p->tasks_count }}</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="{{ route('projects.edit', $p) }}">Edit</a>
+                    <form action="{{ route('projects.destroy', $p) }}" method="POST" style="display:inline-block">
+                        @csrf @method('DELETE')
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus project?')">Hapus</button>
+                    </form>
+                    <a class="btn btn-sm btn-secondary" href="{{ route('projects.show', $p) }}">Lihat</a>
+                </td>
+            </tr>
+        @empty
+            <tr><td colspan="6" class="text-center">Belum ada project</td></tr>
+        @endforelse
+    </tbody>
+</table>
 @endsection

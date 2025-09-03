@@ -34,16 +34,24 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        
+   public function store(Request $request)
+{
+    $request->validate([
+        'name'        => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'status'      => 'required|in:in_progress,done',
+    ]);
+
     Project::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'user_id' => auth()->id(),
-        ]);
-        return redirect()->route('projects.index')->with('success', 'Project berhasil dibuat.');
-    }
+        'name'        => $request->name,
+        'description' => $request->description,
+        'status'      => $request->status,
+        'user_id'     => auth()->id(),
+    ]);
+
+    return redirect()->route('projects.index')->with('success', 'Project berhasil dibuat.');
+}
+
 
     /**
      * Display the specified resource.
@@ -53,6 +61,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $projects = Project::with('tasks')->find($projects->id);
         return view('projects.show', compact('project'));
     }
 

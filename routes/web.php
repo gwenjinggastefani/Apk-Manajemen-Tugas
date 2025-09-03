@@ -22,6 +22,7 @@ Route::get('/', function () {
     return redirect()->route('projects.index');
 });
 
+
 // Project CRUD (langsung bisa diakses)
 Route::resource('projects', ProjectController::class);
 

@@ -25,4 +25,4 @@ Route::get('/', function () {
 
 Route::resource('projects', ProjectController::class);
 Route::resource('tasks', TaskController::class);
-Route::resource('teams', TaskController::class);
+Route::resource('teams', TeamController::class);

@@ -6,117 +6,86 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User;
-
-
-class TaskController extends Controller
+class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-         $tasks = Task::with(['project', 'user'])->get();
-        return view('tasks.index', compact('tasks'));
+        // Ambil semua data tim dengan relasi manager & user
+        $teams = Team::with(['manager', 'user'])->get();
+        return view('teams.index', compact('teams'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-         $projects = Project::all(); 
-         $users = User::all(); 
-        return view('tasks.create', compact('projects','users'));
+        $users = User::all(); 
+        return view('teams.create', compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'project_id' => 'required|exists:projects,id',
-            'status' => 'required|in:todo,in_progress,done',
-            'user_id' => 'required|exists:users,id',
+            'manager_id' => 'required|exists:users,id',
+            'user_id'    => 'required|exists:users,id',
         ]);
 
-        Task::create([
-            'title' => $request->title,
-            'status' => $request->status,
-            'project_id' => $request->project_id,
-            'user_id' => $request->user_id, 
+        Team::create([
+            'manager_id' => $request->manager_id,
+            'user_id'    => $request->user_id,
         ]);
 
-        return redirect()->route('tasks.index')->with('success', 'Task berhasil dibuat.');
+        return redirect()->route('teams.index')->with('success', 'Team berhasil dibuat.');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show(Team $team)
     {
-        return view('tasks.show', compact('task'));
+        return view('teams.show', compact('team'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Task $task)
+    public function edit(Team $team)
     {
-           $projects = Project::all();
-           $users = User::all(); 
-        return view('tasks.edit', compact('task', 'projects', 'users'));
+        $users = User::all(); 
+        return view('teams.edit', compact('team', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Team $team)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'project_id' => 'required|exists:projects,id',
-            'status' => 'required|in:todo,in_progress,done',
-            'user_id' => 'required|exists:users,id',
+            'manager_id' => 'required|exists:users,id',
+            'user_id'    => 'required|exists:users,id',
         ]);
 
-        $task->update([
-            'title' => $request->title,
-            'status' => $request->status,
-            'project_id' => $request->project_id,
-            'user_id' => $request->user_id, 
+        $team->update([
+            'manager_id' => $request->manager_id,
+            'user_id'    => $request->user_id,
         ]);
 
-        return redirect()->route('tasks.index')->with('success', 'Task berhasil diperbarui.');
+        return redirect()->route('teams.index')->with('success', 'Team berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy(Team $team)
     {
-        $task->delete();
-        return redirect()->route('tasks.index')->with('success', 'Task berhasil dihapus.');
+        $team->delete();
+        return redirect()->route('teams.index')->with('success', 'Team berhasil dihapus.');
     }
 }

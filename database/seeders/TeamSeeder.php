@@ -12,25 +12,25 @@ class TeamSeeder extends Seeder
         DB::table('teams')->insert([
             [
                 'manager_id' => 1,
-                'member_id' => 2,
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'manager_id' => 1,
-                'member_id' => 2,
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'manager_id' => 1,
-                'member_id' => 2,
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'manager_id' => 1,
-                'member_id' => 2,
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

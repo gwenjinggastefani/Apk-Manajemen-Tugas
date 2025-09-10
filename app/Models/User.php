@@ -9,13 +9,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', 
+        'role',
     ];
 
     protected $hidden = [
@@ -30,12 +30,23 @@ class User extends Authenticatable
     // Relasi ke Project (kalau admin)
     public function projects()
     {
-        return $this->hasMany(Project::class, 'manager_id'); 
+        return $this->hasMany(Project::class, 'manager_id');
     }
 
     // Relasi ke Task (kalau user)
     public function tasks()
     {
         return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    // Helpers
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
     }
 }

@@ -9,7 +9,8 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'status', 'project_id', 'user_id'];
+    // Perbaikan: Tambahkan field yang hilang dalam fillable
+    protected $fillable = ['title', 'description', 'deadline', 'status', 'project_id', 'user_id'];
 
     public function project() {
         return $this->belongsTo(Project::class);

@@ -8,8 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -19,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'user']);
+            // Perbaikan: Sesuaikan enum role dengan yang digunakan dalam aplikasi
+            $table->enum('role', ['manager', 'user']);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -27,8 +26,6 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

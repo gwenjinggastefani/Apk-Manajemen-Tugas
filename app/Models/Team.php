@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
-    protected $fillable = ['manager_id', 'user_id'];
+    
+    // Perbaikan: Tambahkan project_id yang hilang dalam fillable
+    protected $fillable = ['manager_id', 'user_id', 'project_id'];
 
     public function manager()
     {
@@ -20,4 +22,9 @@ class Team extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    // Perbaikan: Tambahkan relasi project yang hilang
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

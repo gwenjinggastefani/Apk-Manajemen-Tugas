@@ -3,7 +3,11 @@
 @section('content')
 <div class="container">
     <h1 class="mb-3">Daftar Project</h1>
-    <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">Tambah Project</a>
+
+    {{-- 🔒 Tombol tambah hanya muncul kalau manager --}}
+    @can('isManager')
+        <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">Tambah Project</a>
+    @endcan
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -31,14 +35,24 @@
                     <td>{{ $project->user->name ?? '-' }}</td>
                     <td>{{ $project->created_at->format('d-m-Y') }}</td>
                     <td>
-                        <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Yakin hapus project ini?')" class="btn btn-danger btn-sm">
-                                Hapus
-                            </button>
-                        </form>
+                       {{-- Semua role bisa lihat detail --}}
+                        <a href="{{ route('projects.show', $project->id) }}" class="btn btn-info btn-sm">Detail</a>
+                        <div class="d-flex gap-1">
+                            
+                        {{-- 🔒 Edit & hapus hanya manager --}}
+                        
+                            {{-- 🔒 Edit & hapus hanya manager --}}
+                            @can('isManager')
+                                <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('projects.destroy', $project->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Yakin hapus project ini?')" class="btn btn-danger btn-sm">
+                                        Hapus
+                                    </button>
+                                </form>
+                            @endcan
+                        </div>
                     </td>
                 </tr>
             @empty

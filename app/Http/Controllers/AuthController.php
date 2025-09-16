@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -24,13 +25,11 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
 
-            // Redirect berdasarkan role
-            if (auth()->user()->role === 'admin') {
-                return redirect()->route('projects.index')
-                    ->with('success', 'Selamat datang Admin!');
+            // Perbaikan: Redirect berdasarkan role yang benar
+            if (auth()->user()->role === 'manager') {
+                return redirect()->route('projects.index')->with('success', 'Selamat datang Manager!');
             } else {
-                return redirect()->route('tasks.index')
-                    ->with('success', 'Selamat datang User!');
+                return redirect()->route('tasks.index')->with('success', 'Selamat datang User!');
             }
         }
 
@@ -50,4 +49,3 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Anda berhasil logout.');
     }
 }
-

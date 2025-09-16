@@ -4,25 +4,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\AuthController;
 
+// Halaman awal redirect ke login
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::get('/', function () {
-    return redirect()->route('projects.index');
-});
+// 🔹 Auth routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
-Route::resource('projects', ProjectController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('teams', TeamController::class);
+
+// 🔹 Hanya bisa diakses kalau sudah login
+Route::middleware('auth')->group(function () {
+    Route::resource('projects', ProjectController::class);
+    Route::resource('tasks', TaskController::class);
+    Route::resource('teams', TeamController::class);
+});

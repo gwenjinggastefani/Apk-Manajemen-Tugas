@@ -16,7 +16,12 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('status', ['in_progress', 'done'])->default('in_progress');
+            // Perbaikan: Tambah field description yang dibutuhkan controller
+            $table->text('description')->nullable();
+            // Perbaikan: Tambah field deadline yang dibutuhkan controller
+            $table->dateTime('deadline')->nullable();
+            // Perbaikan: Ganti status enum sesuai dengan yang digunakan dalam controller
+            $table->enum('status', ['belum_dikerjakan', 'sedang_dikerjakan', 'selesai'])->default('belum_dikerjakan');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

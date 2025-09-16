@@ -24,9 +24,12 @@ class TeamController extends Controller
      */
     public function create()
     {
-        $users = User::all(); 
-        return view('teams.create', compact('users'));
-    }
+      
+    $users = User::all();
+    $projects = Project::all();
+    return view('teams.create', compact('users', 'projects'));
+}
+
 
     /**
      * Store a newly created resource in storage.

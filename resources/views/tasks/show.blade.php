@@ -211,10 +211,76 @@
             box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
         }
         
+        .btn-primary {
+            background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(120deg, var(--success) 0%, #34d399 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+        
         .action-group {
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
+        }
+        
+        .status-controls {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .status-controls h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-controls h4 i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .status-select-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .form-select {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--gray-light);
+            background: white;
+            font-size: 1rem;
+            color: var(--dark);
+            min-width: 200px;
+            transition: var(--transition);
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
         
         .timestamp {
@@ -241,12 +307,30 @@
             color: var(--dark);
         }
         
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .alert i {
+            margin-right: 10px;
+        }
+        
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
         @media (max-width: 768px) {
             .detail-grid {
                 grid-template-columns: 1fr;
             }
             
-            .btn-group, .action-group {
+            .btn-group, .action-group, .status-select-group {
                 flex-direction: column;
             }
             
@@ -263,7 +347,7 @@
         }
     </style>
 </head>
-<body>
+<>
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">
@@ -278,6 +362,57 @@
             </div>
             
             <div class="card-body">
+                <!-- Status Update untuk User -->
+                @if(auth()->user()->role === 'user' && $task->user_id === auth()->id())
+                    <div class="status-controls">
+                        <h4><i class="fas fa-cog"></i>Kelola Status Task</h4>
+                        
+                        @if($task->status === 'belum_dikerjakan')
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                Task ini belum dikerjakan. Klik "Mulai Kerjakan" untuk memulai.
+                            </div>
+                        @endif
+                        
+                        <form action="{{ route('tasks.update', $task->id) }}" method="POST" id="statusForm">
+                            @csrf
+                            @method('PATCH')
+                            
+                            <div class="status-select-group">
+                                <select name="status" class="form-select" id="statusSelect">
+                                    <option value="belum_dikerjakan" {{ $task->status === 'belum_dikerjakan' ? 'selected' : '' }}>
+                                        Belum Dikerjakan
+                                    </option>
+                                    <option value="sedang_dikerjakan" {{ $task->status === 'sedang_dikerjakan' ? 'selected' : '' }}>
+                                        Sedang Dikerjakan
+                                    </option>
+                                    <option value="selesai" {{ $task->status === 'selesai' ? 'selected' : '' }}>
+                                        Selesai
+                                    </option>
+                                </select>
+                                
+                                <!-- Tombol khusus untuk mulai mengerjakan -->
+                                @if($task->status === 'belum_dikerjakan')
+                                    <button type="button" class="btn btn-primary" onclick="startWorking()">
+                                        <i class="fas fa-play"></i>Mulai Kerjakan
+                                    </button>
+                                @endif
+                                
+                                <!-- Tombol khusus untuk menyelesaikan -->
+                                @if($task->status === 'sedang_dikerjakan')
+                                    <button type="button" class="btn btn-success" onclick="completeTask()">
+                                        <i class="fas fa-check"></i>Selesaikan Task
+                                    </button>
+                                @endif
+                                
+                                <button type="submit" class="btn btn-primary" id="updateBtn">
+                                    <i class="fas fa-save"></i>Update Status
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                @endif
+                
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">
@@ -342,21 +477,21 @@
                         <i class="fas fa-arrow-left"></i>Kembali
                     </a>
 
-                    {{-- 🔒 Edit & hapus hanya manager --}}
-                    @can('isManager')
+                    <!-- Edit & hapus hanya manager -->
+                    @if(auth()->user()->role === 'manager')
                         <div class="action-group">
                             <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning">
                                 <i class="fas fa-edit"></i>Edit
                             </a>
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus task ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button onclick="return confirm('Yakin hapus task ini?')" class="btn btn-danger">
+                                <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash"></i>Hapus
                                 </button>
                             </form>
                         </div>
-                    @endcan
+                    @endif
                 </div>
             </div>
         </div>
@@ -377,15 +512,28 @@
                 
                 if (opacity >= 1) clearInterval(fadeIn);
             }, 50);
-            
-            // Konfirmasi penghapusan task
-            const deleteForm = document.querySelector('form');
-            if (deleteForm) {
-                deleteForm.addEventListener('submit', function(e) {
-                    if (!confirm('Yakin hapus task ini?')) {
-                        e.preventDefault();
-                    }
-                });
+        });
+        
+        // Fungsi untuk mulai mengerjakan task
+        function startWorking() {
+            if (confirm('Mulai mengerjakan task ini?')) {
+                document.getElementById('statusSelect').value = 'sedang_dikerjakan';
+                document.getElementById('statusForm').submit();
             }
+        }
+        
+        // Fungsi untuk menyelesaikan task
+        function completeTask() {
+            if (confirm('Yakin task ini sudah selesai?')) {
+                document.getElementById('statusSelect').value = 'selesai';
+                document.getElementById('statusForm').submit();
+            }
+        }
+        
+        // Auto submit ketika status berubah (optional)
+        document.getElementById('statusSelect').addEventListener('change', function() {
+            const updateBtn = document.getElementById('updateBtn');
+            updateBtn.style.background = 'linear-gradient(120deg, #10b981 0%, #34d399 100%)';
+            updateBtn.innerHTML = '<i class="fas fa-save"></i>Klik untuk Simpan';
         });
     </script>

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,   // 2. Buat project (butuh user_id)
             TeamSeeder::class,      // 3. Buat team (butuh user_id dan project_id)
             TaskSeeder::class,      // 4. Buat task terakhir (butuh project_id dan user_id)
+            GroupSeeder::class,
         ]);
         
         // Informasi untuk development

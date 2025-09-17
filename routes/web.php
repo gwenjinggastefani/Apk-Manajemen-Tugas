@@ -5,6 +5,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GroupController;
 
 // Halaman awal redirect ke login
 Route::get('/', function () {
@@ -23,4 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
     Route::resource('teams', TeamController::class);
+    Route::resource('groups', TeamController::class)->except(['show', 'edit', 'update']);
 });
+
+
+

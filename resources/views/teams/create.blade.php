@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Team Baru</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+<style>
         :root {
             --primary: #4361ee;
             --primary-light: #4895ef;
@@ -27,20 +19,12 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
         .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: calc(100vh - 40px);
+            padding: 20px;
         }
         
         .form-card {
@@ -154,7 +138,7 @@
             font-weight: 600;
             text-decoration: none;
             border: none;
-            cursor: button;
+            cursor: pointer;
             transition: var(--transition);
             flex: 1;
         }
@@ -215,9 +199,17 @@
             color: var(--primary);
         }
         
-        .user-badge {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--success);
+        .alert-danger {
+            background-color: #fee2e2;
+            border-color: #fecaca;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .alert-danger ul {
+            margin: 0;
+            padding-left: 1.5rem;
         }
         
         @media (max-width: 768px) {
@@ -247,6 +239,16 @@
             </div>
             
             <div class="form-body">
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('teams.store') }}" method="POST">
                     @csrf
 
@@ -274,22 +276,43 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_id" class="form-label">
-                            <i class="fas fa-user"></i>Anggota Team
+                        <label for="new_user_name" class="form-label">
+                            <i class="fas fa-user-plus"></i>Nama Anggota Baru
                         </label>
-                        <select name="user_id" id="user_id"
-                                class="form-select @error('user_id') is-invalid @enderror" 
-                                required>
-                            <option value="">-- Pilih Anggota Team --</option>
-                            @foreach ($users as $user)
-                                @if ($user->role === 'user')
-                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} <span class="user-role-badge user-badge">User</span>
-                                    </option>
-                                @endif
-                            @endforeach
-                        </select>
-                        @error('user_id')
+                        <input type="text" name="new_user_name" id="new_user_name"
+                               class="form-control @error('new_user_name') is-invalid @enderror"
+                               value="{{ old('new_user_name') }}"
+                               placeholder="Masukkan nama anggota baru" required>
+                        @error('new_user_name')
+                            <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_user_email" class="form-label">
+                            <i class="fas fa-envelope"></i>Email Anggota Baru
+                        </label>
+                        <input type="email" name="new_user_email" id="new_user_email"
+                               class="form-control @error('new_user_email') is-invalid @enderror"
+                               value="{{ old('new_user_email') }}"
+                               placeholder="Masukkan email anggota baru" required>
+                        @error('new_user_email')
+                            <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_user_password" class="form-label">
+                            <i class="fas fa-lock"></i>Kata Sandi Anggota Baru
+                        </label>
+                        <input type="password" name="new_user_password" id="new_user_password"
+                               class="form-control @error('new_user_password') is-invalid @enderror"
+                               placeholder="Masukkan kata sandi anggota baru" required>
+                        @error('new_user_password')
                             <div class="invalid-feedback">
                                 <i class="fas fa-exclamation-circle"></i>{{ $message }}
                             </div>
@@ -329,22 +352,23 @@
             </div>
         </div>
     </div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 
     <script>
-        // Menambahkan efek interaktif pada form
         document.addEventListener('DOMContentLoaded', function() {
             const formControls = document.querySelectorAll('.form-control, .form-select');
             
             formControls.forEach(control => {
-                // Efek saat fokus
                 control.addEventListener('focus', function() {
                     this.parentElement.classList.add('focused');
                 });
                 
-                // Efek saat kehilangan fokus
                 control.addEventListener('blur', function() {
                     this.parentElement.classList.remove('focused');
                 });
             });
         });
     </script>
+</body>
+</html>

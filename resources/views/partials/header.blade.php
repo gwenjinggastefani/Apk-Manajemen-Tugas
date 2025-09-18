@@ -317,6 +317,7 @@
                         Teams
                     </a>
                 </li>
+               
 
                 {{-- Authentication Section --}}
                 @auth

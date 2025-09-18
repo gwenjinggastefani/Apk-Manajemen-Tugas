@@ -1,23 +1,25 @@
+{{-- resources/views/tasks/create.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Task Baru</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Buat Task Baru</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #4361ee;
             --primary-light: #4895ef;
             --secondary: #3f37c9;
-            --success: #4cc9f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --dark: #1e293b;
             --light: #f8fafc;
             --gray: #64748b;
             --gray-light: #e2e8f0;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
         
@@ -34,67 +36,88 @@
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
-        }
-        
-        .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 40px);
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 650px;
+            animation: fadeIn 0.6s ease-out;
         }
         
         .form-card {
             background: #ffffff;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 700px;
             overflow: hidden;
             transition: var(--transition);
+            position: relative;
         }
         
         .form-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
         
         .form-header {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
         }
         
         .form-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 50%;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
         }
         
         .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -0.5px;
         }
         
         .form-subtitle {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.9;
             font-weight: 400;
+            position: relative;
+            z-index: 2;
         }
         
         .form-body {
-            padding: 2.5rem 2rem;
+            padding: 3rem 2.5rem;
         }
         
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
             position: relative;
         }
         
@@ -102,81 +125,88 @@
             display: block;
             font-weight: 600;
             color: var(--dark);
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
         }
         
         .form-label i {
-            margin-right: 10px;
+            margin-right: 12px;
             color: var(--primary);
+            width: 20px;
+            text-align: center;
         }
         
         .form-control, .form-select {
             width: 100%;
-            padding: 0.875rem 1.25rem;
+            padding: 1rem 1.5rem;
             font-size: 1rem;
             border: 2px solid var(--gray-light);
-            border-radius: 10px;
+            border-radius: 12px;
             transition: var(--transition);
             outline: none;
             background-color: #fff;
             color: var(--dark);
+            font-family: 'Inter', sans-serif;
         }
         
         .form-control:focus, .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+            transform: translateY(-2px);
         }
         
         textarea.form-control {
             resize: vertical;
-            min-height: 120px;
+            min-height: 130px;
+            line-height: 1.5;
         }
         
         .form-select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
+            background-position: right 1.2rem center;
+            background-size: 18px;
         }
         
         .btn-group {
             display: flex;
-            gap: 1rem;
-            margin-top: 2.5rem;
+            gap: 1.2rem;
+            margin-top: 3rem;
         }
         
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.875rem 1.75rem;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 1.1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
             font-weight: 600;
             text-decoration: none;
             border: none;
             cursor: pointer;
             transition: var(--transition);
             flex: 1;
+            font-family: 'Inter', sans-serif;
         }
         
         .btn i {
-            margin-right: 8px;
+            margin-right: 10px;
+            font-size: 1.1rem;
         }
         
         .btn-success {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
         }
         
         .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
         }
         
         .btn-secondary {
@@ -187,28 +217,67 @@
         
         .btn-secondary:hover {
             background: var(--gray-light);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
         
         .invalid-feedback {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.6rem;
             display: flex;
             align-items: center;
+            font-weight: 500;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--danger);
         }
         
         .invalid-feedback i {
-            margin-right: 5px;
+            margin-right: 8px;
+            font-size: 1rem;
         }
         
         .form-control.is-invalid, .form-select.is-invalid {
-            border-color: #ef4444;
+            border-color: var(--danger);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.8rem;
+        }
+        
+        .status-in-progress {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-done {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         @media (max-width: 768px) {
             .form-body {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
             }
             
             .btn-group {
@@ -216,7 +285,34 @@
             }
             
             .form-header {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.8rem;
+            }
+            
+            .form-icon {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .form-body {
+                padding: 1.5rem 1.2rem;
+            }
+            
+            .form-header {
+                padding: 1.8rem 1.2rem;
+            }
+            
+            .btn {
+                padding: 1rem 1.5rem;
             }
         }
     </style>
@@ -228,8 +324,8 @@
                 <div class="form-icon">
                     <i class="fas fa-tasks fa-2x"></i>
                 </div>
-                <h1 class="form-title">Tambah Task Baru</h1>
-                <p class="form-subtitle">Buat task baru untuk project Anda</p>
+                <h1 class="form-title">Buat Task Baru</h1>
+                <p class="form-subtitle">Tambahkan task untuk project Anda</p>
             </div>
             
             <div class="form-body">
@@ -238,7 +334,7 @@
 
                     <div class="form-group">
                         <label for="title" class="form-label">
-                            <i class="fas fa-heading"></i>Judul Task
+                            <i class="fas fa-signature"></i>Judul Task
                         </label>
                         <input type="text" name="title" id="title"
                                class="form-control @error('title') is-invalid @enderror" 
@@ -253,18 +349,44 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left"></i>Deskripsi Task
+                        </label>
+                        <textarea name="description" id="description"
+                                  class="form-control @error('description') is-invalid @enderror"
+                                  rows="4"
+                                  placeholder="Jelaskan detail task">{{ old('description') }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deadline" class="form-label">
+                            <i class="fas fa-calendar-alt"></i>Deadline
+                        </label>
+                        <input type="date" name="deadline" id="deadline"
+                               class="form-control @error('deadline') is-invalid @enderror"
+                               value="{{ old('deadline') }}">
+                        @error('deadline')
+                            <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="status" class="form-label">
-                            <i class="fas fa-tasks"></i>Status
+                            <i class="fas fa-tasks"></i>Status Task
                         </label>
                         <select name="status" id="status"
                                 class="form-select @error('status') is-invalid @enderror" 
                                 required>
-                            <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>
-                                In Progress
-                            </option>
-                            <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>
-                                Done
-                            </option>
+                            <option value="belum_dikerjakan" {{ old('status') == 'belum_dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
+                            <option value="sedang_dikerjakan" {{ old('status') == 'sedang_dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
+                            <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
                         @error('status')
                             <div class="invalid-feedback">
@@ -274,35 +396,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_id" class="form-label">
-                            <i class="fas fa-user"></i>Pemilik Task
-                        </label>
-                        <select name="user_id" id="user_id"
-                                class="form-select @error('user_id') is-invalid @enderror" 
-                                required>
-                            <option value="">-- Pilih User --</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }} ({{ ucfirst($user->role) }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
                         <label for="project_id" class="form-label">
-                            <i class="fas fa-project-diagram"></i>Project
+                            <i class="fas fa-project-diagram"></i>Pilih Project
                         </label>
                         <select name="project_id" id="project_id"
-                                class="form-select @error('project_id') is-invalid @enderror" 
+                                class="form-select @error('project_id') is-invalid @enderror"
                                 required>
                             <option value="">-- Pilih Project --</option>
-                            @foreach ($projects as $project)
+                            @foreach($projects as $project)
                                 <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
                                     {{ $project->name }}
                                 </option>
@@ -315,9 +416,30 @@
                         @enderror
                     </div>
 
+                    <div class="form-group">
+                        <label for="user_id" class="form-label">
+                            <i class="fas fa-user"></i>Assign ke User
+                        </label>
+                        <select name="user_id" id="user_id"
+                                class="form-select @error('user_id') is-invalid @enderror"
+                                required>
+                            <option value="">-- Pilih User --</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('user_id')
+                            <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     <div class="btn-group">
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i>Simpan Task
+                            <i class="fas fa-plus-circle"></i>Simpan Task
                         </button>
                         <a href="{{ route('tasks.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i>Kembali
@@ -328,23 +450,3 @@
         </div>
     </div>
 
-    <script>
-        // Menambahkan efek interaktif pada form
-        document.addEventListener('DOMContentLoaded', function() {
-            const formControls = document.querySelectorAll('.form-control, .form-select');
-            
-            formControls.forEach(control => {
-                // Efek saat fokus
-                control.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                // Efek saat kehilangan fokus
-                control.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
-                });
-            });
-        });
-    </script>
-</body>
-</html>

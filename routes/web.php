@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
     Route::resource('teams', TeamController::class);
-    Route::resource('groups', TeamController::class)->except(['show', 'edit', 'update']);
+    Route::resource('groups', GroupController::class);
 });
 
 

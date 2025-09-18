@@ -64,7 +64,7 @@ class TaskController extends Controller
             'description' => 'required|string',
             'deadline'    => 'required|date|after:now',
             'project_id'  => 'required|exists:projects,id',
-            'status'      => 'required|in:belum_dikerjakan,sedang_dikerjakan,selesai',
+            'status' => 'required|in:belum_dikerjakan,sedang_dikerjakan,selesai',
             'user_id'     => 'required|exists:users,id',
         ]);
 

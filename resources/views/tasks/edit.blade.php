@@ -1,334 +1,114 @@
-<style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: calc(100vh - 40px);
-        }
-        
-        .form-card {
-            background: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 700px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .form-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
-        
-        .form-header {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-        }
-        
-        .form-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            margin-bottom: 1rem;
-        }
-        
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-        
-        .form-body {
-            padding: 2.5rem 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.8rem;
-            position: relative;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-label i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-        
-        .form-control, .form-select {
-            width: 100%;
-            padding: 0.875rem 1.25rem;
-            font-size: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            transition: var(--transition);
-            outline: none;
-            background-color: #fff;
-            color: var(--dark);
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-        
-        .form-control:disabled {
-            background-color: #f9fafb;
-            color: var(--gray);
-        }
-        
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2.5rem;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 1.75rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            flex: 1;
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #fff;
-            color: var(--gray);
-            border: 2px solid var(--gray-light);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--gray-light);
-            transform: translateY(-2px);
-        }
-        
-        .invalid-feedback {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .invalid-feedback i {
-            margin-right: 5px;
-        }
-        
-        .form-control.is-invalid, .form-select.is-invalid {
-            border-color: #ef4444;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 0.35rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-left: 0.75rem;
-        }
-        
-        .status-not-started {
-            background-color: rgba(107, 114, 128, 0.1);
-            color: #6b7280;
-        }
-        
-        .status-in-progress {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-        }
-        
-        .status-completed {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-        
-        .info-box {
-            background-color: #f0f9ff;
-            border-left: 4px solid var(--info);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .info-box i {
-            color: var(--info);
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .form-body {
-                padding: 1.5rem;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .form-header {
-                padding: 1.5rem;
+{{-- resources/views/tasks/edit.blade.php --}}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        'primary-light': '#4895ef',
+                        secondary: '#3f37c9',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#3b82f6',
+                    }
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="form-container">
-        <div class="form-card">
-            <div class="form-header">
-                <div class="form-icon">
-                    <i class="fas fa-edit fa-2x"></i>
+<div class="font-sans bg-gradient-to-br from-slate-50 to-slate-200 text-slate-800 min-h-screen p-5">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-3xl">
+            <!-- Header -->
+            <div class="relative bg-gradient-to-r from-primary to-secondary text-white p-8 text-center">
+                <div class="inline-flex items-center justify-center w-15 h-15 bg-white/20 rounded-full mb-4">
+                    <i class="fas fa-edit text-2xl"></i>
                 </div>
-                <h1 class="form-title">Edit Task</h1>
-                <p class="form-subtitle">Perbarui informasi task Anda</p>
+                <h1 class="text-3xl font-bold mb-2">Edit Task</h1>
+                <p class="text-base opacity-90">Perbarui informasi task Anda</p>
             </div>
             
-            <div class="form-body">
-                <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+            <!-- Form Body -->
+            <div class="p-10">
+                <form action="{{ route('tasks.update', $task->id) }}" method="POST" class="space-y-7">
                     @csrf
                     @method('PUT')
 
-                    <div class="form-group">
-                        <label for="title" class="form-label">
-                            <i class="fas fa-heading"></i>Judul Task
+                    <!-- Title -->
+                    <div class="group">
+                        <label for="title" class="flex items-center text-slate-800 font-semibold mb-3">
+                            <i class="fas fa-heading text-primary mr-2"></i>
+                            Judul Task
                         </label>
                         <input type="text" name="title" id="title"
-                               class="form-control @error('title') is-invalid @enderror" 
+                               class="w-full px-5 py-3 border-2 border-slate-200 rounded-lg transition-all duration-300 outline-none bg-white text-slate-800 focus:border-primary-light focus:ring-3 focus:ring-primary/15 @error('title') border-red-500 @enderror" 
                                value="{{ old('title', $task->title) }}" 
                                placeholder="Masukkan judul task"
                                required>
                         @error('title')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            <div class="flex items-center mt-2 text-red-500 text-sm">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="status" class="form-label">
-                            <i class="fas fa-tasks"></i>Status
+                    <!-- Status -->
+                    <div class="group">
+                        <label for="status" class="flex items-center text-slate-800 font-semibold mb-3">
+                            <i class="fas fa-tasks text-primary mr-2"></i>
+                            Status
                         </label>
                         <select name="status" id="status"
-                                class="form-select @error('status') is-invalid @enderror" 
+                                class="w-full px-5 py-3 border-2 border-slate-200 rounded-lg transition-all duration-300 outline-none bg-white text-slate-800 focus:border-primary-light focus:ring-3 focus:ring-primary/15 appearance-none @error('status') border-red-500 @enderror" 
                                 required>
                             <option value="belum_dikerjakan" {{ old('status', $task->status) == 'belum_dikerjakan' ? 'selected' : '' }}>
-                                Belum Dikerjakan <span class="status-badge status-not-started">Not Started</span>
+                                Belum Dikerjakan
                             </option>
                             <option value="sedang_dikerjakan" {{ old('status', $task->status) == 'sedang_dikerjakan' ? 'selected' : '' }}>
-                                Sedang Dikerjakan <span class="status-badge status-in-progress">In Progress</span>
+                                Sedang Dikerjakan
                             </option>
                             <option value="selesai" {{ old('status', $task->status) == 'selesai' ? 'selected' : '' }}>
-                                Selesai <span class="status-badge status-completed">Completed</span>
+                                Selesai
                             </option>
                         </select>
                         @error('status')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            <div class="flex items-center mt-2 text-red-500 text-sm">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="info-box">
-                        <i class="fas fa-info-circle"></i>
+                    <!-- Info Box -->
+                    <div class="bg-blue-50 border-l-4 border-info p-4 rounded-lg flex items-start mb-6">
+                        <i class="fas fa-info-circle text-info mr-3 mt-1 text-lg"></i>
                         <div>
-                            <strong>Pemilik Project:</strong> {{ $task->project->user->name ?? '-' }}
-                            <br>
-                            <small>Pemilik project tidak dapat diubah melalui form ini</small>
+                            <div class="font-semibold text-slate-800">Pemilik Project:</div>
+                            <div class="text-slate-600">{{ $task->project->user->name ?? '-' }}</div>
+                            <div class="text-sm text-slate-500 mt-1">Pemilik project tidak dapat diubah melalui form ini</div>
                         </div>
                     </div>
                     
                     <input type="hidden" name="user_id" value="{{ $task->project->user_id }}">
 
-                    <div class="form-group">
-                        <label for="project_id" class="form-label">
-                            <i class="fas fa-project-diagram"></i>Project
+                    <!-- Project -->
+                    <div class="group">
+                        <label for="project_id" class="flex items-center text-slate-800 font-semibold mb-3">
+                            <i class="fas fa-project-diagram text-primary mr-2"></i>
+                            Project
                         </label>
                         <select name="project_id" id="project_id"
-                                class="form-select @error('project_id') is-invalid @enderror" 
+                                class="w-full px-5 py-3 border-2 border-slate-200 rounded-lg transition-all duration-300 outline-none bg-white text-slate-800 focus:border-primary-light focus:ring-3 focus:ring-primary/15 appearance-none @error('project_id') border-red-500 @enderror" 
                                 required>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}" {{ old('project_id', $task->project_id) == $project->id ? 'selected' : '' }}>
@@ -337,18 +117,22 @@
                             @endforeach
                         </select>
                         @error('project_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            <div class="flex items-center mt-2 text-red-500 text-sm">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-sync-alt"></i>Update Task
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 mt-10">
+                        <button type="submit" class="flex-1 inline-flex items-center justify-center px-7 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-light shadow-lg shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            Update Task
                         </button>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i>Kembali
+                        <a href="{{ route('tasks.index') }}" class="flex-1 inline-flex items-center justify-center px-7 py-3 rounded-lg font-semibold text-slate-600 bg-white border-2 border-slate-200 transition-all duration-300 hover:bg-slate-100 hover:-translate-y-0.5">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Kembali
                         </a>
                     </div>
                 </form>
@@ -356,30 +140,39 @@
         </div>
     </div>
 
+    <style>
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+        }
+    </style>
+
     <script>
-        // Menambahkan efek interaktif pada form
+        // Form interaction effects
         document.addEventListener('DOMContentLoaded', function() {
-            const formControls = document.querySelectorAll('.form-control, .form-select');
+            const formControls = document.querySelectorAll('input, select, textarea');
             
             formControls.forEach(control => {
-                // Efek saat fokus
+                // Focus effect
                 control.addEventListener('focus', function() {
                     this.parentElement.classList.add('focused');
                 });
                 
-                // Efek saat kehilangan fokus
+                // Blur effect
                 control.addEventListener('blur', function() {
                     this.parentElement.classList.remove('focused');
                 });
                 
-                // Set nilai awal jika sudah terisi
+                // Set initial state if filled
                 if (control.value) {
                     control.parentElement.classList.add('focused');
                 }
             });
             
-            // Animasi untuk form card
-            const formCard = document.querySelector('.form-card');
+            // Card animation
+            const formCard = document.querySelector('.bg-white');
             formCard.style.opacity = 0;
             formCard.style.transform = 'translateY(20px)';
             

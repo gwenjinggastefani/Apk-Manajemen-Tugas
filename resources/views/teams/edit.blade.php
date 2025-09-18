@@ -1,258 +1,53 @@
-@extends('layouts.app')
-
-@section('content')
+{{-- resources/views/tasks/edit.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Team</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Edit Task</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --success: #4cc9f0;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: calc(100vh - 40px);
-            padding: 20px;
-        }
-        
-        .form-card {
-            background: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 700px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .form-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
-        
-        .form-header {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-        }
-        
-        .form-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            margin-bottom: 1rem;
-        }
-        
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-        
-        .form-body {
-            padding: 2.5rem 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.8rem;
-            position: relative;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-label i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-        
-        .form-control, .form-select {
-            width: 100%;
-            padding: 0.875rem 1.25rem;
-            font-size: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            transition: var(--transition);
-            outline: none;
-            background-color: #fff;
-            color: var(--dark);
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-        
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2.5rem;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 1.75rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            flex: 1;
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .btn-success {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #fff;
-            color: var(--gray);
-            border: 2px solid var(--gray-light);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--gray-light);
-            transform: translateY(-2px);
-        }
-        
-        .invalid-feedback {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .invalid-feedback i {
-            margin-right: 5px;
-        }
-        
-        .form-control.is-invalid, .form-select.is-invalid {
-            border-color: #ef4444;
-        }
-        
-        .user-role-badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
-        .manager-badge {
-            background-color: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-        }
-        
-        .alert-danger {
-            background-color: #fee2e2;
-            border-color: #fecaca;
-            color: #b91c1c;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        
-        .alert-danger ul {
-            margin: 0;
-            padding-left: 1.5rem;
-        }
-        
-        @media (max-width: 768px) {
-            .form-body {
-                padding: 1.5rem;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .form-header {
-                padding: 1.5rem;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        'primary-light': '#4895ef',
+                        secondary: '#3f37c9',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#3b82f6',
+                    }
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="form-container">
-        <div class="form-card">
-            <div class="form-header">
-                <div class="form-icon">
-                    <i class="fas fa-users fa-2x"></i>
+
+<div class="font-sans bg-gradient-to-br from-slate-50 to-slate-200 text-slate-800 min-h-screen p-5">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-3xl">
+
+            <!-- Header -->
+            <div class="relative bg-gradient-to-r from-[#4361ee] to-[#3f37c9] text-white p-10 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4">
+                    <i class="fas fa-edit text-2xl"></i>
                 </div>
-                <h1 class="form-title">Edit Team</h1>
-                <p class="form-subtitle">Perbarui informasi tim untuk project management</p>
+                <h1 class="text-3xl font-bold mb-2">Edit Team</h1>
+                <p class="text-base opacity-90">Perbarui informasi tim untuk project management</p>
             </div>
-            
-            <div class="form-body">
+
+            <!-- Form Body -->
+            <div class="p-10">
                 @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
+                    <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            <h3 class="text-red-800 font-semibold">Terdapat kesalahan:</h3>
+                        </div>
+                        <ul class="list-disc list-inside text-red-700 space-y-1">
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -260,39 +55,44 @@
                     </div>
                 @endif
 
-                <form action="{{ route('teams.update', $team->id) }}" method="POST">
+                <form action="{{ route('teams.update', $team->id) }}" method="POST" class="space-y-7">
                     @csrf
                     @method('PUT')
 
-                    <div class="form-group">
-                        <label for="manager_id" class="form-label">
-                            <i class="fas fa-user-tie"></i>Manager
+                    <!-- Manager Selection -->
+                    <div class="group">
+                        <label for="manager_id" class="flex items-center text-slate-800 font-semibold mb-3">
+                            <i class="fas fa-user-tie" style="color:#4361ee; margin-right:0.5rem"></i>
+                            Manager
                         </label>
                         <select name="manager_id" id="manager_id"
-                                class="form-select @error('manager_id') is-invalid @enderror" 
+                                class="w-full px-5 py-3 border-2 border-slate-200 rounded-lg transition-all duration-300 outline-none bg-white text-slate-800 focus:border-[#4895ef] focus:ring-3 focus:ring-[#4361ee]/15 appearance-none @error('manager_id') border-red-500 @enderror"
                                 required>
                             <option value="">-- Pilih Manager --</option>
                             @foreach ($users as $user)
                                 @if ($user->role === 'manager')
                                     <option value="{{ $user->id }}" {{ old('manager_id', $team->manager_id) == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} <span class="user-role-badge manager-badge">Manager</span>
+                                        {{ $user->name }}
                                     </option>
                                 @endif
                             @endforeach
                         </select>
                         @error('manager_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            <div class="flex items-center mt-2 text-red-500 text-sm">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="project_id" class="form-label">
-                            <i class="fas fa-project-diagram"></i>Project
+                    <!-- Project Selection -->
+                    <div class="group">
+                        <label for="project_id" class="flex items-center text-slate-800 font-semibold mb-3">
+                            <i class="fas fa-project-diagram" style="color:#4361ee; margin-right:0.5rem"></i>
+                            Project
                         </label>
                         <select name="project_id" id="project_id"
-                                class="form-select @error('project_id') is-invalid @enderror" 
+                                class="w-full px-5 py-3 border-2 border-slate-200 rounded-lg transition-all duration-300 outline-none bg-white text-slate-800 focus:border-[#4895ef] focus:ring-3 focus:ring-[#4361ee]/15 appearance-none @error('project_id') border-red-500 @enderror"
                                 required>
                             <option value="">-- Pilih Project --</option>
                             @foreach ($projects as $project)
@@ -302,18 +102,50 @@
                             @endforeach
                         </select>
                         @error('project_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
+                            <div class="flex items-center mt-2 text-red-500 text-sm">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i>Simpan Perubahan
+                    <!-- Current Team Info -->
+                    <div class="bg-[#3b82f6]/10 border-l-4 border-[#3b82f6] p-4 rounded-lg flex flex-col md:flex-row gap-4 mb-6">
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-user-tie text-[#3b82f6] mr-2"></i> Manager
+                            </div>
+                            <div class="text-slate-600">{{ $team->manager->name ?? '-' }}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-user text-[#3b82f6] mr-2"></i> Anggota
+                            </div>
+                            <div class="text-slate-600">{{ $team->user->name ?? '-' }}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-project-diagram text-[#3b82f6] mr-2"></i> Project
+                            </div>
+                            <div class="text-slate-600">{{ $team->project->name ?? '-' }}</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-calendar-alt text-[#3b82f6] mr-2"></i> Dibuat
+                            </div>
+                            <div class="text-slate-600">{{ $team->created_at->format('d-m-Y H:i') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 mt-6">
+                        <button type="submit" class="flex-1 inline-flex items-center justify-center px-7 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-[#4361ee] to-[#4895ef] shadow-lg shadow-[#4361ee]/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#4361ee]/30">
+                            <i class="fas fa-save mr-2"></i>
+                            Simpan Perubahan
                         </button>
-                        <a href="{{ route('teams.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i>Kembali
+                        <a href="{{ route('teams.index') }}" class="flex-1 inline-flex items-center justify-center px-7 py-3 rounded-lg font-semibold text-slate-600 bg-white border-2 border-slate-200 transition-all duration-300 hover:bg-slate-100 hover:-translate-y-0.5">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Kembali
                         </a>
                     </div>
                 </form>
@@ -321,21 +153,13 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const formControls = document.querySelectorAll('.form-control, .form-select');
-            
-            formControls.forEach(control => {
-                control.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                control.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
-                });
-            });
-        });
-    </script>
-</body>
-</html>
-@endsection
+    <style>
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+        }
+    </style>
+</div>
+

@@ -6,265 +6,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Task Baru</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        'primary-light': '#4895ef',
+                        secondary: '#3f37c9',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<div class="font-sans bg-gradient-to-br from-slate-50 to-slate-200 text-slate-800 min-h-screen p-5 flex justify-center items-center">
+    <div class="w-full max-w-2xl animate-fade-in">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+            <!-- Header -->
+            <div class="relative bg-gradient-to-br from-primary to-secondary text-white p-10 text-center overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent transform rotate-12"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/15 rounded-full mb-5 backdrop-blur-sm">
+                        <i class="fas fa-tasks text-3xl"></i>
+                    </div>
+                    <h1 class="text-4xl font-bold mb-2 tracking-tight">Buat Task Baru</h1>
+                    <p class="text-lg opacity-90">Tambahkan task untuk project Anda</p>
+                </div>
+            </div>
+            
+            <!-- Form Body -->
+            <div class="p-12">
+                <form action="{{ route('tasks.store') }}" method="POST" class="space-y-8">
+                    @csrf
+
+                    <!-- Title -->
+                    <div class="group">
+                        <label for="title" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-signature text-primary mr-3 w-5"></i>
+                            Judul Task
+                        </label>
+                        <input type="text" name="title" id="title"
+                               class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium placeholder-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 @error('title') border-red-500 @enderror" 
+                               value="{{ old('title') }}" 
+                               placeholder="Masukkan judul task"
+                               required>
+                        @error('title')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Description -->
+                    <div class="group">
+                        <label for="description" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-align-left text-primary mr-3 w-5"></i>
+                            Deskripsi Task
+                        </label>
+                        <textarea name="description" id="description"
+                                  class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium placeholder-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 resize-y min-h-32 leading-6 @error('description') border-red-500 @enderror"
+                                  rows="4"
+                                  placeholder="Jelaskan detail task">{{ old('description') }}</textarea>
+                        @error('description')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Deadline -->
+                    <div class="group">
+                        <label for="deadline" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-calendar-alt text-primary mr-3 w-5"></i>
+                            Deadline
+                        </label>
+                        <input type="date" name="deadline" id="deadline"
+                               class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 @error('deadline') border-red-500 @enderror"
+                               value="{{ old('deadline') }}">
+                        @error('deadline')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Status -->
+                    <div class="group">
+                        <label for="status" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-tasks text-primary mr-3 w-5"></i>
+                            Status Task
+                        </label>
+                        <select name="status" id="status"
+                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none bg-arrow-down @error('status') border-red-500 @enderror" 
+                                required>
+                            <option value="belum_dikerjakan" {{ old('status') == 'belum_dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
+                            <option value="sedang_dikerjakan" {{ old('status') == 'sedang_dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
+                            <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        </select>
+                        @error('status')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Project Selection -->
+                    <div class="group">
+                        <label for="project_id" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-project-diagram text-primary mr-3 w-5"></i>
+                            Pilih Project
+                        </label>
+                        <select name="project_id" id="project_id"
+                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none @error('project_id') border-red-500 @enderror"
+                                required>
+                            <option value="">-- Pilih Project --</option>
+                            @foreach($projects as $project)
+                                <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                                    {{ $project->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('project_id')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- User Assignment -->
+                    <div class="group">
+                        <label for="user_id" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
+                            <i class="fas fa-user text-primary mr-3 w-5"></i>
+                            Assign ke User
+                        </label>
+                        <select name="user_id" id="user_id"
+                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none @error('user_id') border-red-500 @enderror"
+                                required>
+                            <option value="">-- Pilih User --</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('user_id')
+                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-5 mt-12 md:flex-row flex-col">
+                        <button type="submit" class="flex-1 inline-flex items-center justify-center px-8 py-4 rounded-xl text-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-light shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40">
+                            <i class="fas fa-plus-circle mr-3 text-xl"></i>
+                            Simpan Task
+                        </button>
+                        <a href="{{ route('tasks.index') }}" class="flex-1 inline-flex items-center justify-center px-8 py-4 rounded-xl text-lg font-semibold text-slate-600 bg-white border-2 border-slate-200 transition-all duration-300 hover:bg-slate-100 hover:-translate-y-1 hover:shadow-lg">
+                            <i class="fas fa-arrow-left mr-3 text-xl"></i>
+                            Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --border-radius: 16px;
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .form-container {
-            width: 100%;
-            max-width: 650px;
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .form-card {
-            background: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        .form-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-        
-        .form-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .form-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transform: rotate(30deg);
-        }
-        
-        .form-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            margin-bottom: 1.2rem;
-            backdrop-filter: blur(10px);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .form-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 2;
-            letter-spacing: -0.5px;
-        }
-        
-        .form-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 400;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .form-body {
-            padding: 3rem 2.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.8rem;
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-label i {
-            margin-right: 12px;
-            color: var(--primary);
-            width: 20px;
-            text-align: center;
-        }
-        
-        .form-control, .form-select {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            font-size: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            transition: var(--transition);
-            outline: none;
-            background-color: #fff;
-            color: var(--dark);
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        textarea.form-control {
-            resize: vertical;
-            min-height: 130px;
-            line-height: 1.5;
-        }
-        
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.2rem center;
-            background-size: 18px;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1.2rem;
-            margin-top: 3rem;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.1rem 2rem;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            flex: 1;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .btn i {
-            margin-right: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #fff;
-            color: var(--gray);
-            border: 2px solid var(--gray-light);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--gray-light);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .invalid-feedback {
-            color: var(--danger);
-            font-size: 0.9rem;
-            margin-top: 0.6rem;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            background: rgba(239, 68, 68, 0.05);
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            border-left: 3px solid var(--danger);
-        }
-        
-        .invalid-feedback i {
-            margin-right: 8px;
-            font-size: 1rem;
-        }
-        
-        .form-control.is-invalid, .form-select.is-invalid {
-            border-color: var(--danger);
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-        }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.4rem 0.9rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-left: 0.8rem;
-        }
-        
-        .status-in-progress {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-        
-        .status-done {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-        
-        @keyframes fadeIn {
+        @keyframes fade-in {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -275,178 +196,14 @@
             }
         }
         
-        @media (max-width: 768px) {
-            .form-body {
-                padding: 2rem 1.5rem;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .form-header {
-                padding: 2rem 1.5rem;
-            }
-            
-            .form-title {
-                font-size: 1.8rem;
-            }
-            
-            .form-icon {
-                width: 70px;
-                height: 70px;
-            }
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out;
         }
         
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-            
-            .form-body {
-                padding: 1.5rem 1.2rem;
-            }
-            
-            .form-header {
-                padding: 1.8rem 1.2rem;
-            }
-            
-            .btn {
-                padding: 1rem 1.5rem;
-            }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 18px;
         }
     </style>
-</head>
-<body>
-    <div class="form-container">
-        <div class="form-card">
-            <div class="form-header">
-                <div class="form-icon">
-                    <i class="fas fa-tasks fa-2x"></i>
-                </div>
-                <h1 class="form-title">Buat Task Baru</h1>
-                <p class="form-subtitle">Tambahkan task untuk project Anda</p>
-            </div>
-            
-            <div class="form-body">
-                <form action="{{ route('tasks.store') }}" method="POST">
-                    @csrf
-
-                    <div class="form-group">
-                        <label for="title" class="form-label">
-                            <i class="fas fa-signature"></i>Judul Task
-                        </label>
-                        <input type="text" name="title" id="title"
-                               class="form-control @error('title') is-invalid @enderror" 
-                               value="{{ old('title') }}" 
-                               placeholder="Masukkan judul task"
-                               required>
-                        @error('title')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description" class="form-label">
-                            <i class="fas fa-align-left"></i>Deskripsi Task
-                        </label>
-                        <textarea name="description" id="description"
-                                  class="form-control @error('description') is-invalid @enderror"
-                                  rows="4"
-                                  placeholder="Jelaskan detail task">{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="deadline" class="form-label">
-                            <i class="fas fa-calendar-alt"></i>Deadline
-                        </label>
-                        <input type="date" name="deadline" id="deadline"
-                               class="form-control @error('deadline') is-invalid @enderror"
-                               value="{{ old('deadline') }}">
-                        @error('deadline')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status" class="form-label">
-                            <i class="fas fa-tasks"></i>Status Task
-                        </label>
-                        <select name="status" id="status"
-                                class="form-select @error('status') is-invalid @enderror" 
-                                required>
-                            <option value="belum_dikerjakan" {{ old('status') == 'belum_dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
-                            <option value="sedang_dikerjakan" {{ old('status') == 'sedang_dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
-                            <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="project_id" class="form-label">
-                            <i class="fas fa-project-diagram"></i>Pilih Project
-                        </label>
-                        <select name="project_id" id="project_id"
-                                class="form-select @error('project_id') is-invalid @enderror"
-                                required>
-                            <option value="">-- Pilih Project --</option>
-                            @foreach($projects as $project)
-                                <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
-                                    {{ $project->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('project_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="user_id" class="form-label">
-                            <i class="fas fa-user"></i>Assign ke User
-                        </label>
-                        <select name="user_id" id="user_id"
-                                class="form-select @error('user_id') is-invalid @enderror"
-                                required>
-                            <option value="">-- Pilih User --</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <div class="invalid-feedback">
-                                <i class="fas fa-exclamation-circle"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-plus-circle"></i>Simpan Task
-                        </button>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i>Kembali
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-

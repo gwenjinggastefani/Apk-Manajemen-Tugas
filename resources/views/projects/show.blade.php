@@ -1,487 +1,270 @@
-<style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3f37c9;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .page-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-        }
-        
-        .page-title i {
-            margin-right: 12px;
-            color: var(--primary);
-        }
-        
-        .card {
-            background: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
-        
-        .card-header {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 1.5rem;
-        }
-        
-        .card-body {
-            padding: 2rem;
-        }
-        
-        .project-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-        
-        .project-description {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-        }
-        
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .detail-label {
-            font-weight: 600;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .detail-label i {
-            margin-right: 8px;
-            color: var(--primary);
-        }
-        
-        .detail-value {
-            font-size: 1.1rem;
-            color: var(--dark);
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.35rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .badge-success {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-        
-        .badge-warning {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .btn-secondary {
-            background: #fff;
-            color: var(--gray);
-            border: 2px solid var(--gray-light);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--gray-light);
-            transform: translateY(-2px);
-        }
-        
-        .btn-warning {
-            background: linear-gradient(120deg, var(--warning) 0%, #fbbf24 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
-        }
-        
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.25);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-info {
-            background: linear-gradient(120deg, var(--info) 0%, #60a5fa 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
-        }
-        
-        .btn-info:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-danger {
-            background: linear-gradient(120deg, var(--danger) 0%, #f87171 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
-        }
-        
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
-        }
-        
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            color: var(--dark);
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-        
-        .table-container {
-            background: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-        
-        .table-header {
-            background: var(--gray-light);
-            padding: 1rem 1.5rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .task-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .task-table th {
-            background: var(--light);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--gray);
-            border-bottom: 1px solid var(--gray-light);
-        }
-        
-        .task-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--gray-light);
-        }
-        
-        .task-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .task-table tr:hover {
-            background: #f9fafb;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: var(--gray);
-        }
-        
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--gray-light);
-        }
-        
-        .action-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        @media (max-width: 768px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .action-group {
-                flex-direction: column;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .task-table {
-                display: block;
-                overflow-x: auto;
+{{-- resources/views/tasks/show.blade.php --}}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Task</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        'primary-light': '#4895ef',
+                        secondary: '#3f37c9',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#3b82f6',
+                    }
+                }
             }
         }
-    </style>
+    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">
-                <i class="fas fa-project-diagram"></i>Detail Project
+<div class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <br>
+        <br>
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-project-diagram mr-3 text-blue-600"></i>
+                Detail Project
             </h1>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h2 class="project-title">{{ $project->name }}</h2>
-                <p class="project-description">{{ $project->description ?? 'Tidak ada deskripsi' }}</p>
+        <!-- Project Detail Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 transform hover:-translate-y-1 transition-all duration-300">
+            <!-- Project Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8">
+                <h2 class="text-3xl font-bold mb-2">{{ $project->name }}</h2>
+                <p class="text-lg opacity-90">{{ $project->description ?? 'Tidak ada deskripsi' }}</p>
             </div>
             
-            <div class="card-body">
-                <div class="detail-grid">
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-tasks"></i>Status
-                        </span>
-                        <span class="detail-value">
-                            <span class="badge {{ $project->status === 'done' ? 'badge-success' : 'badge-warning' }}">
+            <!-- Project Details -->
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Status -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-tasks text-blue-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-600">Status</span>
+                        </div>
+                        <div class="text-lg font-semibold">
+                            <span class="inline-flex items-center px-3 py-2 rounded-full text-sm font-medium
+                                {{ $project->status === 'done' 
+                                    ? 'bg-green-100 text-green-800' 
+                                    : 'bg-yellow-100 text-yellow-800' }}">
+                                <i class="fas {{ $project->status === 'done' ? 'fa-check-circle' : 'fa-clock' }} mr-2"></i>
                                 {{ ucfirst(str_replace('_',' ',$project->status)) }}
                             </span>
-                        </span>
+                        </div>
                     </div>
                     
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-user"></i>Pemilik Project
-                        </span>
-                        <span class="detail-value">{{ $project->user->name ?? '-' }}</span>
+                    <!-- Owner -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-user text-blue-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-600">Pemilik Project</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-blue-600 text-sm"></i>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-800">{{ $project->user->name ?? '-' }}</span>
+                        </div>
                     </div>
                     
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <i class="fas fa-calendar"></i>Dibuat pada
-                        </span>
-                        <span class="detail-value">{{ $project->created_at->format('d-m-Y H:i') }}</span>
+                    <!-- Created Date -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-calendar text-blue-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-600">Dibuat pada</span>
+                        </div>
+                        <div class="text-lg font-semibold text-gray-800">
+                            {{ $project->created_at->format('d-m-Y H:i') }}
+                        </div>
                     </div>
                 </div>
                 
-                <div class="btn-group">
-                    <a href="{{ route('projects.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i>Kembali
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-4">
+                    <a href="{{ route('projects.index') }}" 
+                       class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-1 transform inline-flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
                     </a>
 
-                    {{-- 🔒 Manager bisa edit project --}}
+                    {{-- Manager bisa edit project --}}
                     @can('isManager')
-                        <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-warning">
-                            <i class="fas fa-edit"></i>Edit Project
+                        <a href="{{ route('projects.edit', $project->id) }}" 
+                           class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-1 transform inline-flex items-center">
+                            <i class="fas fa-edit mr-2"></i>Edit Project
                         </a>
                     @endcan
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title">
-            <i class="fas fa-list-check"></i>Daftar Task
-        </h2>
-
-        <div class="table-container">
-            <div class="table-header">
-                Task dalam project ini
+        <!-- Tasks Section -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Section Header -->
+            <div class="bg-gradient-to-r from-indigo-100 to-purple-100 px-8 py-6 border-b border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-list-check mr-3 text-indigo-600"></i>
+                    Daftar Task
+                </h2>
+                <p class="text-gray-600 mt-1">Task dalam project ini</p>
             </div>
             
             @if($project->tasks->count() > 0)
-                <table class="task-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul Task</th>
-                            <th>Status</th>
-                            <th>Ditugaskan ke</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($project->tasks as $task)
+                <!-- Tasks Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <strong>{{ $task->title }}</strong>
-                                </td>
-                                <td>
-                                    <span class="badge {{ $task->status === 'done' ? 'badge-success' : 'badge-warning' }}">
-                                        {{ ucfirst(str_replace('_',' ',$task->status)) }}
-                                    </span>
-                                </td>
-                                <td>{{ $task->user->name ?? '-' }}</td>
-                                <td>
-                                    <div class="action-group">
-                                        {{-- User hanya bisa lihat --}}
-                                        <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-info btn-sm">
-                                            <i class="fas fa-eye"></i>Detail
-                                        </a>
-
-                                        {{-- 🔒 Manager bisa edit & hapus --}}
-                                        @can('isManager')
-                                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-edit"></i>Edit
-                                            </a>
-                                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button onclick="return confirm('Yakin hapus task ini?')" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash"></i>Hapus
-                                                </button>
-                                            </form>
-                                        @endcan
-                                    </div>
-                                </td>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Judul Task</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Ditugaskan ke</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($project->tasks as $task)
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ $task->title }}</div>
+                                        @if($task->description)
+                                            <div class="text-sm text-gray-500 max-w-xs truncate">{{ $task->description }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                                            {{ $task->status === 'done' 
+                                                ? 'bg-green-100 text-green-800' 
+                                                : 'bg-yellow-100 text-yellow-800' }}">
+                                            <i class="fas {{ $task->status === 'done' ? 'fa-check-circle' : 'fa-clock' }} mr-1 text-xs"></i>
+                                            {{ ucfirst(str_replace('_',' ',$task->status)) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-user text-purple-600 text-xs"></i>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $task->user->name ?? '-' }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center space-x-2">
+                                            {{-- User hanya bisa lihat --}}
+                                            <a href="{{ route('tasks.show', $task->id) }}" 
+                                               class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
+                                                <i class="fas fa-eye mr-1"></i>Detail
+                                            </a>
+
+                                            {{-- Manager bisa edit & hapus --}}
+                                            @can('isManager')
+                                                <a href="{{ route('tasks.edit', $task->id) }}" 
+                                                   class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
+                                                    <i class="fas fa-edit mr-1"></i>Edit
+                                                </a>
+                                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button onclick="return confirm('Yakin hapus task ini?')" 
+                                                            class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
+                                                        <i class="fas fa-trash mr-1"></i>Hapus
+                                                    </button>
+                                                </form>
+                                            @endcan
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @else
-                <div class="empty-state">
-                    <i class="fas fa-tasks"></i>
-                    <p>Belum ada task dalam project ini</p>
+                <!-- Empty State -->
+                <div class="px-8 py-12 text-center">
+                    <div class="flex flex-col items-center justify-center text-gray-500">
+                        <i class="fas fa-tasks text-6xl mb-4 text-gray-300"></i>
+                        <h3 class="text-xl font-medium text-gray-900 mb-2">Belum ada task</h3>
+                        <p class="text-sm text-gray-500 mb-6">Belum ada task dalam project ini</p>
+                        
+                        @can('isManager')
+                            <a href="{{ route('tasks.create') }}" 
+                               class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 hover:-translate-y-1 transform inline-flex items-center">
+                                <i class="fas fa-plus mr-2"></i>Tambah Task Pertama
+                            </a>
+                        @endcan
+                    </div>
                 </div>
             @endif
         </div>
 
-        {{-- 🔒 Manager bisa tambah task baru --}}
-        @can('isManager')
-            <a href="{{ route('tasks.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i>Tambah Task
-            </a>
-        @endcan
+        {{-- Manager bisa tambah task baru --}}
+        @if($project->tasks->count() > 0)
+            @can('isManager')
+                <div class="mt-8 text-center">
+                    <a href="{{ route('tasks.create') }}" 
+                       class="bg-gradient-to-r from-green-600 to-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-200 hover:-translate-y-1 transform inline-flex items-center text-lg shadow-lg">
+                        <i class="fas fa-plus mr-2"></i>Tambah Task Baru
+                    </a>
+                </div>
+            @endcan
+        @endif
     </div>
+</div>
 
-    <script>
-        // Menambahkan efek interaktif pada card dan tabel
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card, .table-container');
-            
-            cards.forEach(card => {
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(20px)';
-                
-                let opacity = 0;
-                const fadeIn = setInterval(() => {
-                    opacity += 0.05;
-                    card.style.opacity = opacity;
-                    card.style.transform = `translateY(${20 - (20 * opacity)}px)`;
-                    
-                    if (opacity >= 1) clearInterval(fadeIn);
-                }, 50);
-            });
-            
-            // Konfirmasi penghapusan task
-            const deleteForms = document.querySelectorAll('form');
-            deleteForms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    if (!confirm('Yakin hapus task ini?')) {
-                        e.preventDefault();
-                    }
-                });
-            });
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add staggered fade-in animation to cards
+    const cards = document.querySelectorAll('.bg-white');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+    
+    // Add fade-in animation to table rows
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateX(0)';
+        }, 800 + (index * 100));
+    });
+    
+    // Confirm delete action
+    const deleteButtons = document.querySelectorAll('button[onclick*="confirm"]');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Yakin hapus task ini? Data yang terhapus tidak dapat dikembalikan.')) {
+                this.closest('form').submit();
+            }
         });
-    </script>
+    });
+});
+</script>

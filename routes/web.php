@@ -16,7 +16,6 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
 
 // 🔹 Hanya bisa diakses kalau sudah login
@@ -24,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
     Route::resource('teams', TeamController::class);
-    Route::resource('groups', GroupController::class);
+    
 });
 
 

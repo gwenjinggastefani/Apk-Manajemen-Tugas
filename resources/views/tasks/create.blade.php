@@ -5,130 +5,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Task Baru</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4361ee',
-                        'primary-light': '#4895ef',
-                        secondary: '#3f37c9',
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        danger: '#ef4444',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<div class="font-sans bg-gradient-to-br from-slate-50 to-slate-200 text-slate-800 min-h-screen p-5 flex justify-center items-center">
-    <div class="w-full max-w-2xl animate-fade-in">
-        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-            <!-- Header -->
-            <div class="relative bg-gradient-to-br from-primary to-secondary text-white p-10 text-center overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent transform rotate-12"></div>
-                
-                <div class="relative z-10">
-                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white/15 rounded-full mb-5 backdrop-blur-sm">
-                        <i class="fas fa-tasks text-3xl"></i>
-                    </div>
-                    <h1 class="text-4xl font-bold mb-2 tracking-tight">Buat Task Baru</h1>
-                    <p class="text-lg opacity-90">Tambahkan task untuk project Anda</p>
-                </div>
-            </div>
+<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl">
+        <div class="bg-white shadow-xl rounded-2xl overflow-hidden transition hover:-translate-y-1 hover:shadow-2xl">
             
-            <!-- Form Body -->
-            <div class="p-12">
-                <form action="{{ route('tasks.store') }}" method="POST" class="space-y-8">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white p-8 text-center relative">
+                <div class="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-white/20 backdrop-blur-md rounded-full">
+                    <i class="fas fa-tasks text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold mb-1">Buat Task Baru</h1>
+                <p class="text-white/90">Tambahkan task untuk project Anda</p>
+            </div>
+
+            <!-- Body -->
+            <div class="p-8">
+                <form action="{{ route('tasks.store') }}" method="POST" class="space-y-6">
                     @csrf
 
-                    <!-- Title -->
-                    <div class="group">
-                        <label for="title" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-signature text-primary mr-3 w-5"></i>
-                            Judul Task
+                    <!-- Judul -->
+                    <div>
+                        <label for="title" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-signature mr-2 text-indigo-600"></i> Judul Task
                         </label>
                         <input type="text" name="title" id="title"
-                               class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium placeholder-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 @error('title') border-red-500 @enderror" 
-                               value="{{ old('title') }}" 
-                               placeholder="Masukkan judul task"
-                               required>
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('title') border-red-500 @enderror"
+                            value="{{ old('title') }}" placeholder="Masukkan judul task" required>
                         @error('title')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
-                    <!-- Description -->
-                    <div class="group">
-                        <label for="description" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-align-left text-primary mr-3 w-5"></i>
-                            Deskripsi Task
+                    <!-- Deskripsi -->
+                    <div>
+                        <label for="description" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-align-left mr-2 text-indigo-600"></i> Deskripsi Task
                         </label>
-                        <textarea name="description" id="description"
-                                  class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium placeholder-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 resize-y min-h-32 leading-6 @error('description') border-red-500 @enderror"
-                                  rows="4"
-                                  placeholder="Jelaskan detail task">{{ old('description') }}</textarea>
+                        <textarea name="description" id="description" rows="4"
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror"
+                            placeholder="Jelaskan detail task">{{ old('description') }}</textarea>
                         @error('description')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
                     <!-- Deadline -->
-                    <div class="group">
-                        <label for="deadline" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-calendar-alt text-primary mr-3 w-5"></i>
-                            Deadline
+                    <div>
+                        <label for="deadline" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-calendar-alt mr-2 text-indigo-600"></i> Deadline
                         </label>
                         <input type="date" name="deadline" id="deadline"
-                               class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 focus:-translate-y-1 @error('deadline') border-red-500 @enderror"
-                               value="{{ old('deadline') }}">
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('deadline') border-red-500 @enderror"
+                            value="{{ old('deadline') }}">
                         @error('deadline')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
                     <!-- Status -->
-                    <div class="group">
-                        <label for="status" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-tasks text-primary mr-3 w-5"></i>
-                            Status Task
+                    <div>
+                        <label for="status" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-tasks mr-2 text-indigo-600"></i> Status Task
                         </label>
                         <select name="status" id="status"
-                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none bg-arrow-down @error('status') border-red-500 @enderror" 
-                                required>
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('status') border-red-500 @enderror"
+                            required>
                             <option value="belum_dikerjakan" {{ old('status') == 'belum_dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
                             <option value="sedang_dikerjakan" {{ old('status') == 'sedang_dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
                             <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
                         @error('status')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
-                    <!-- Project Selection -->
-                    <div class="group">
-                        <label for="project_id" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-project-diagram text-primary mr-3 w-5"></i>
-                            Pilih Project
+                    <!-- Project -->
+                    <div>
+                        <label for="project_id" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-project-diagram mr-2 text-indigo-600"></i> Pilih Project
                         </label>
                         <select name="project_id" id="project_id"
-                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none @error('project_id') border-red-500 @enderror"
-                                required>
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('project_id') border-red-500 @enderror"
+                            required>
                             <option value="">-- Pilih Project --</option>
                             @foreach($projects as $project)
                                 <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
@@ -137,22 +108,20 @@
                             @endforeach
                         </select>
                         @error('project_id')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
-                    <!-- User Assignment -->
-                    <div class="group">
-                        <label for="user_id" class="flex items-center text-slate-800 font-semibold mb-3 text-lg">
-                            <i class="fas fa-user text-primary mr-3 w-5"></i>
-                            Assign ke User
+                    <!-- User -->
+                    <div>
+                        <label for="user_id" class="block font-semibold mb-2 text-gray-700">
+                            <i class="fas fa-user mr-2 text-indigo-600"></i> Assign ke User
                         </label>
                         <select name="user_id" id="user_id"
-                                class="w-full px-6 py-4 text-base border-2 border-slate-200 rounded-xl transition-all duration-300 outline-none bg-white text-slate-800 font-medium focus:border-primary focus:ring-4 focus:ring-primary/15 appearance-none @error('user_id') border-red-500 @enderror"
-                                required>
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('user_id') border-red-500 @enderror"
+                            required>
                             <option value="">-- Pilih User --</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
@@ -161,22 +130,21 @@
                             @endforeach
                         </select>
                         @error('user_id')
-                            <div class="flex items-center mt-3 text-red-500 text-sm font-medium bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500">
-                                <i class="fas fa-exclamation-circle mr-2"></i>
-                                {{ $message }}
-                            </div>
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i> {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex gap-5 mt-12 md:flex-row flex-col">
-                        <button type="submit" class="flex-1 inline-flex items-center justify-center px-8 py-4 rounded-xl text-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-light shadow-lg shadow-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40">
-                            <i class="fas fa-plus-circle mr-3 text-xl"></i>
-                            Simpan Task
+                    <!-- Tombol -->
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" 
+                            class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition flex items-center justify-center">
+                            <i class="fas fa-plus-circle mr-2"></i> Simpan Task
                         </button>
-                        <a href="{{ route('tasks.index') }}" class="flex-1 inline-flex items-center justify-center px-8 py-4 rounded-xl text-lg font-semibold text-slate-600 bg-white border-2 border-slate-200 transition-all duration-300 hover:bg-slate-100 hover:-translate-y-1 hover:shadow-lg">
-                            <i class="fas fa-arrow-left mr-3 text-xl"></i>
-                            Kembali
+                        <a href="{{ route('tasks.index') }}" 
+                            class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold shadow-sm transition flex items-center justify-center">
+                            <i class="fas fa-arrow-left mr-2"></i> Kembali
                         </a>
                     </div>
                 </form>
@@ -184,26 +152,5 @@
         </div>
     </div>
 
-    <style>
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate-fade-in {
-            animation: fade-in 0.6s ease-out;
-        }
-        
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.2rem center;
-            background-size: 18px;
-        }
-    </style>
+</body>
+</html>

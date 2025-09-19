@@ -1,10 +1,10 @@
-{{-- resources/views/tasks/show.blade.php --}}
+{{-- resources/views/teams/show.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Task</title>
+    <title>Detail Team</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -41,7 +41,7 @@
                 <h2 class="text-2xl md:text-3xl font-bold flex items-center mb-2">
                     <i class="fas fa-user-friends mr-3"></i>Struktur Team
                 </h2>
-                <p class="opacity-90">Detail informasi tentang tim dan anggotanya</p>
+                <p class="opacity-90">Detail informasi tentang tim, project, dan anggotanya</p>
             </div>
 
             <div class="p-6 md:p-8">
@@ -54,9 +54,6 @@
                         </span>
                         <span class="text-slate-800 font-medium text-lg">
                             {{ $team->manager->name ?? '-' }}
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-600 ml-2">
-                                Manager
-                            </span>
                         </span>
                     </div>
 
@@ -67,9 +64,16 @@
                         </span>
                         <span class="text-slate-800 font-medium text-lg">
                             {{ $team->user->name ?? '-' }}
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600 ml-2">
-                                Anggota
-                            </span>
+                        </span>
+                    </div>
+
+                    <!-- Project -->
+                    <div class="bg-slate-50 rounded-xl p-4 border-l-4 border-purple-500 col-span-1 md:col-span-2">
+                        <span class="flex items-center text-gray-600 font-semibold mb-1 text-sm">
+                            <i class="fas fa-project-diagram mr-2 text-purple-500"></i>Project
+                        </span>
+                        <span class="text-slate-800 font-medium text-lg">
+                            {{ $team->project->name ?? '-' }}
                         </span>
                     </div>
                 </div>

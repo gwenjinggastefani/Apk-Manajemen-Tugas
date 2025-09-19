@@ -1,56 +1,55 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Project - Project Manager')
-
 @section('content')
-<div class="container mx-auto px-4 py-8 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 min-h-screen">
 <br>
-<br>    
-<!-- Page Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <h1 class="text-3xl font-bold text-gray-800 flex items-center">
-            <i class="fas fa-project-diagram mr-3 text-blue-600"></i>
-            Daftar Project
-        </h1>
+<br>
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Daftar Project</h1>
         
-        {{-- Tombol tambah hanya muncul kalau manager --}}
         @can('isManager')
             <a href="{{ route('projects.create') }}" 
-               class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 transform inline-flex items-center">
-                <i class="fas fa-plus mr-2"></i> Tambah Project
+               class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200">
+                + Tambah Project
             </a>
         @endcan
     </div>
 
-    <!-- Projects Table Card -->
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gradient-to-r from-gray-50 to-blue-50">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">No</th>
-                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Nama Project</th>
-                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Deskripsi</th>
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+        <table class="w-full">
+            <thead class="bg-gradient-to-r from-gray-50 to-blue-50">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Nama Project</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Deskripsi</th>
+                    
+                    {{-- Kolom tambahan hanya untuk manager --}}
+                    @can('isManager')
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">User</th>
                         <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Dibuat Pada</th>
-                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($projects as $project)
-                        <tr class="hover:bg-gray-50 transition-colors duration-200">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ $loop->iteration }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $project->name }}</div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-500 max-w-xs truncate">
-                                    {{ $project->description ?: 'Tidak ada deskripsi' }}
-                                </div>
-                            </td>
+                    @endcan
+
+                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @forelse ($projects as $project)
+                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ $project->name }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-500 max-w-xs truncate">
+                                {{ $project->description ?: 'Tidak ada deskripsi' }}
+                            </div>
+                        </td>
+
+                        {{-- Data tambahan hanya untuk manager --}}
+                        @can('isManager')
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
                                     {{ $project->status === 'done' 
@@ -62,91 +61,52 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-2">
-                                        <i class="fas fa-user text-blue-600 text-xs"></i>
+                                    <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                        <i class="fas fa-user text-gray-500"></i>
                                     </div>
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ $project->user->name ?? '-' }}
+                                    <div class="ml-3 text-sm text-gray-900">
+                                        {{ $project->user->name ?? 'Tidak ada' }}
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <i class="fas fa-calendar-alt mr-1"></i>
-                                {{ $project->created_at->format('d-m-Y') }}
+                                {{ $project->created_at->format('d M Y') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex items-center space-x-2">
-                                    {{-- Semua role bisa lihat detail --}}
-                                    <a href="{{ route('projects.show', $project->id) }}" 
-                                       class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
-                                        <i class="fas fa-eye mr-1"></i> Detail
-                                    </a>
-                                    
-                                    {{-- Edit & hapus hanya manager --}}
-                                    @can('isManager')
-                                        <a href="{{ route('projects.edit', $project->id) }}" 
-                                           class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
-                                            <i class="fas fa-edit mr-1"></i> Edit
-                                        </a>
-                                        <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button onclick="return confirm('Yakin hapus project ini?')" 
-                                                    class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded-lg transition-colors duration-200 inline-flex items-center text-xs">
-                                                <i class="fas fa-trash mr-1"></i> Hapus
-                                            </button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="px-6 py-12 text-center">
-                                <div class="flex flex-col items-center justify-center text-gray-500">
-                                    <i class="fas fa-folder-open text-4xl mb-4 text-gray-300"></i>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-1">Belum ada project</h3>
-                                    <p class="text-sm">Mulai dengan membuat project baru</p>
-                                    @can('isManager')
-                                        <a href="{{ route('projects.create') }}" 
-                                           class="mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 inline-flex items-center text-sm">
-                                            <i class="fas fa-plus mr-2"></i> Buat Project
-                                        </a>
-                                    @endcan
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
+                        @endcan
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add fade-in animation to table rows
-    const rows = document.querySelectorAll('tbody tr');
-    rows.forEach((row, index) => {
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            row.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            row.style.opacity = '1';
-            row.style.transform = 'translateY(0)';
-        }, index * 100);
-    });
-    
-    // Confirm delete action
-    const deleteButtons = document.querySelectorAll('button[onclick*="confirm"]');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (confirm('Yakin hapus project ini? Data yang terhapus tidak dapat dikembalikan.')) {
-                this.closest('form').submit();
-            }
-        });
-    });
-});
-</script>
+                        <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
+                            <a href="{{ route('projects.show', $project) }}" 
+                               class="px-3 py-1 bg-blue-500 text-white text-sm rounded-lg shadow hover:bg-blue-600 transition duration-200">
+                                Detail
+                            </a>
+
+                            @can('isManager')
+                                <a href="{{ route('projects.edit', $project) }}" 
+                                   class="px-3 py-1 bg-yellow-500 text-white text-sm rounded-lg shadow hover:bg-yellow-600 transition duration-200">
+                                    Edit
+                                </a>
+                                <form action="{{ route('projects.destroy', $project) }}" method="POST" 
+                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus project ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="px-3 py-1 bg-red-500 text-white text-sm rounded-lg shadow hover:bg-red-600 transition duration-200">
+                                        Hapus
+                                    </button>
+                                </form>
+                            @endcan
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="@can('isManager') 7 @else 4 @endcan" 
+                            class="px-6 py-4 text-center text-sm text-gray-500">
+                            Tidak ada project yang tersedia.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
